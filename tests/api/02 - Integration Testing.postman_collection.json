@@ -1,0 +1,726 @@
+{
+	"info": {
+		"_postman_id": "8f18b298-d365-4516-8a63-a3e07b389d01",
+		"name": "02 - Integration Testing",
+		"description": "# About this collection\n\nThis test collection follows the process of setting up & using the Books API to ensure that all functions work together seamlessly.\n\n## **Using the collection**\n\n**Step 1:** Run the collection via \"Run\"\n\n**Step 2:** Check the results.\n\n**Note:** The tests checking for empty responses will only pass on a fresh installation.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30596148"
+	},
+	"item": [
+		{
+			"name": "01 - Books",
+			"item": [
+				{
+					"name": "01 - Fetch an empty lists of Books",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type is present and application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Body is present\", function() {",
+									"    pm.response.to.have.body;",
+									"});",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function() {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response object is valid\", function () {",
+									"    pm.expect(jsonResponse).to.be.an(\"object\");",
+									"",
+									"    pm.expect(jsonResponse).to.have.property(\"books\");",
+									"    pm.expect(jsonResponse).to.have.property(\"count\");",
+									"",
+									"    pm.expect(jsonResponse.books).to.be.an(\"array\");",
+									"    pm.expect(jsonResponse.count).to.be.an(\"number\");",
+									"",
+									"    pm.expect(jsonResponse.count).to.be.a('number').and.to.equal(0, \"Count should be Zero.\");",
+									"    pm.expect(jsonResponse.books.length).to.equal(0, \"Array books should be empty.\");",
+									"",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{backend}}/books",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02 - Get a not existing Book by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type is present and application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Body is present\", function() {",
+									"    pm.response.to.have.body;",
+									"});",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function() {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Returns valid object\", () => {",
+									"    pm.expect(jsonResponse).to.be.an(\"object\");",
+									"",
+									"    // Check the expected properties exist",
+									"    pm.expect(jsonResponse).to.have.property(\"message\");",
+									"",
+									"    // Check the values have the expected types",
+									"    pm.expect(jsonResponse.message).to.be.a('string');",
+									"    ",
+									"    pm.expect(jsonResponse.message).to.equal('Book not found', \"Error message should be 'Book not found' \");   ",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{backend}}/books/123456789",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books",
+								"123456789"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03 - Create a new Book with valid input",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type is present and application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Body is present\", function() {",
+									"    pm.response.to.have.body;",
+									"});",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function() {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Returns valid object\", () => {",
+									"    pm.expect(jsonResponse).to.be.an(\"object\");",
+									"",
+									"    // Check the expected properties exist",
+									"    pm.expect(jsonResponse).to.have.property(\"book_id\");",
+									"   ",
+									"    // Check the values have the expected types",
+									"    pm.expect(jsonResponse.book_id).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Book ID should not be empty\");",
+									"",
+									"});",
+									"",
+									"pm.collectionVariables.set('book_id', jsonResponse.book_id)",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"book_title\": \"Example Book Title\",\n    \"book_desc\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mattis nunc sed blandit libero volutpat sed cras ornare. Donec ultrices tincidunt arcu non sodales neque sodales ut etiam. Bibendum at varius vel pharetra vel. Eu volutpat odio facilisis mauris. Risus quis varius quam quisque id diam vel quam.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/{{backend}}/books",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04 - Verify new Book exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type is present and application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Body is present\", function() {",
+									"    pm.response.to.have.body;",
+									"});",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function() {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response object is valid\", function () {",
+									"    pm.expect(jsonResponse).to.be.an(\"object\");",
+									"",
+									"    pm.expect(jsonResponse).to.have.property(\"book_id\");",
+									"    pm.expect(jsonResponse).to.have.property(\"book_title\");",
+									"    pm.expect(jsonResponse).to.have.property(\"book_desc\");",
+									"",
+									"",
+									"    pm.expect(jsonResponse.book_id).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Book ID should not be empty\");",
+									"    pm.expect(jsonResponse.book_title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Book Title should not be empty\");",
+									"    pm.expect(jsonResponse.book_desc).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Book Description should not be empty\");",
+									"",
+									"});",
+									"",
+									"pm.test(\"Response values are correct\", () => {",
+									"",
+									"    // Expected values",
+									"    var book_id = pm.collectionVariables.get(\"book_id\");",
+									"    var book_desc = \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mattis nunc sed blandit libero volutpat sed cras ornare. Donec ultrices tincidunt arcu non sodales neque sodales ut etiam. Bibendum at varius vel pharetra vel. Eu volutpat odio facilisis mauris. Risus quis varius quam quisque id diam vel quam.\";",
+									"    var book_title = \"Example Book Title\";",
+									"",
+									"    pm.expect(jsonResponse.book_id).to.be.equal(book_id, \"Book ID does not match.\");",
+									"    pm.expect(jsonResponse.book_desc).to.be.equal(book_desc, \"Book Description does not match.\");",
+									"    pm.expect(jsonResponse.book_title).to.be.equal(book_title, \"Book Title does not match.\");",
+									"",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{backend}}/books/{{book_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books",
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05 - Update the Book Title and Description",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type is present and application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Body is present\", function() {",
+									"    pm.response.to.have.body;",
+									"});",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function() {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Returns valid object\", () => {",
+									"    // Check the expected properties exist",
+									"    pm.expect(jsonResponse).to.be.empty;",
+									"",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"book_title\": \"Example Book Title - Changed\",\n    \"book_desc\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mattis nunc sed blandit libero volutpat sed cras ornare. Donec ultrices tincidunt arcu non sodales neque sodales ut etiam. Bibendum at varius vel pharetra vel. Eu volutpat odio facilisis mauris. Risus quis varius quam quisque id diam vel quam. Mattis nunc sed blandit libero volutpat sed cras ornare. Donec ultrices tincidunt arcu non sodales neque sodales ut etiam. Bibendum at varius vel pharetra vel. Eu volutpat odio facilisis mauris. Risus quis varius quam quisque id diam vel quam.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/{{backend}}/books/{{book_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books",
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06 - Verify the Book Title and Description was changed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type is present and application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Body is present\", function() {",
+									"    pm.response.to.have.body;",
+									"});",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function() {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response object is valid\", function () {",
+									"    pm.expect(jsonResponse).to.be.an(\"object\");",
+									"",
+									"    pm.expect(jsonResponse).to.have.property(\"book_id\");",
+									"    pm.expect(jsonResponse).to.have.property(\"book_title\");",
+									"    pm.expect(jsonResponse).to.have.property(\"book_desc\");",
+									"",
+									"",
+									"    pm.expect(jsonResponse.book_id).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Book ID should not be empty\");",
+									"    pm.expect(jsonResponse.book_title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Book Title should not be empty\");",
+									"    pm.expect(jsonResponse.book_desc).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Book Description should not be empty\");",
+									"",
+									"});",
+									"",
+									"pm.test(\"Response values are correct\", () => {",
+									"",
+									"    // Expected values",
+									"    var book_id = pm.collectionVariables.get(\"book_id\");",
+									"    var book_desc = \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mattis nunc sed blandit libero volutpat sed cras ornare. Donec ultrices tincidunt arcu non sodales neque sodales ut etiam. Bibendum at varius vel pharetra vel. Eu volutpat odio facilisis mauris. Risus quis varius quam quisque id diam vel quam. Mattis nunc sed blandit libero volutpat sed cras ornare. Donec ultrices tincidunt arcu non sodales neque sodales ut etiam. Bibendum at varius vel pharetra vel. Eu volutpat odio facilisis mauris. Risus quis varius quam quisque id diam vel quam.\"",
+									"    var book_title = \"Example Book Title - Changed\";",
+									"",
+									"    pm.expect(jsonResponse.book_id).to.be.equal(book_id, \"Book ID does not match.\");",
+									"    pm.expect(jsonResponse.book_desc).to.be.equal(book_desc, \"Book Description does not match.\");",
+									"    pm.expect(jsonResponse.book_title).to.be.equal(book_title, \"Book Title does not match.\");",
+									"",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{backend}}/books/{{book_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books",
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07 - Fetch an non-empty lists of Books",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type is present and application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Body is present\", function() {",
+									"    pm.response.to.have.body;",
+									"});",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function() {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response object is valid\", function () {",
+									"    pm.expect(jsonResponse).to.be.an(\"object\");",
+									"",
+									"    pm.expect(jsonResponse).to.have.property(\"books\");",
+									"    pm.expect(jsonResponse).to.have.property(\"count\");",
+									"",
+									"    pm.expect(jsonResponse.books).to.be.an(\"array\");",
+									"    pm.expect(jsonResponse.count).to.be.an(\"number\");",
+									"",
+									"    pm.expect(jsonResponse.count).to.be.a('number').and.to.greaterThan(0, \"Count should NOT be Zero.\");",
+									"    pm.expect(jsonResponse.books.length).to.be.greaterThan(0, \"Array books should NOT be empty.\");",
+									"",
+									"",
+									"    jsonResponse.books.forEach(function(book) {",
+									"",
+									"        pm.expect(book).to.be.an(\"object\");",
+									"",
+									"        pm.expect(book).to.have.property(\"book_id\");",
+									"        pm.expect(book).to.have.property(\"book_title\");",
+									"        pm.expect(book).to.have.property(\"book_desc\");",
+									"",
+									"        pm.expect(book.book_id).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Book ID should not be empty\");",
+									"        pm.expect(book.book_title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Book Title should not be empty\");",
+									"        pm.expect(book.book_desc).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Book Description should not be empty\");        ",
+									"   ",
+									"    });",
+									"",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{backend}}/books",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "08 - Delete the created Book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type is present and application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Body is present\", function() {",
+									"    pm.response.to.have.body;",
+									"});",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function() {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Returns valid object\", () => {",
+									"    // Check the expected properties exist",
+									"    pm.expect(jsonResponse).to.be.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{backend}}/books/{{book_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books",
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "09 - Verify the Book was deleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type is present and application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Body is present\", function() {",
+									"    pm.response.to.have.body;",
+									"});",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function() {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Returns valid object\", () => {",
+									"    pm.expect(jsonResponse).to.be.an(\"object\");",
+									"",
+									"    // Check the expected properties exist",
+									"    pm.expect(jsonResponse).to.have.property(\"message\");",
+									"",
+									"    // Check the values have the expected types",
+									"    pm.expect(jsonResponse.message).to.be.a('string');",
+									"    ",
+									"    pm.expect(jsonResponse.message).to.equal('Book not found', \"Error message should be 'Book not found' \");   ",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{backend}}/books/{{book_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books",
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.environment.set(\"backend\", \"ddb\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "backend",
+			"value": "ddb",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}

@@ -1,0 +1,35 @@
+version: 0.2
+
+env:
+  secrets-manager:
+    API_CLIENT_SECRET_VALUE: ${API_CLIENT_SECRET}
+
+
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands: 
+      - npm install -g newman newman-reporter-xunit
+      - apt-get install -y jq
+
+  pre_build:
+    commands:
+      - cd ./tests/api
+      - export API_CLIENT_ID
+      - echo Get Client Access Token via Oauth2 Login
+      - "export API_CLIENT_ACCESS_TOKEN=`curl -X POST --user $API_CLIENT_ID:$API_CLIENT_SECRET_VALUE \"$API_ACCESS_TOKEN_URL?grant_type=client_credentials\" -H 'Content-Type: application/x-www-form-urlencoded' | jq -r '.access_token'`"
+      - echo Check if we got an Token
+      - if [ "$API_CLIENT_ACCESS_TOKEN" = "null" ]; then echo "Token Verification failed" && exit 1; fi
+
+  build:
+    commands:
+      - echo Build started on `date` from dir `pwd`
+      - newman run "02 - Integration Testing.postman_collection.json" -r xunit --env-var "base_url=$API_BASE_URl" --env-var "token=$API_CLIENT_ACCESS_TOKEN"
+
+reports:
+  JUnitReports:
+    files: 
+      - '**/*'
+    base-directory: 'tests/api/newman' # Location of the reports

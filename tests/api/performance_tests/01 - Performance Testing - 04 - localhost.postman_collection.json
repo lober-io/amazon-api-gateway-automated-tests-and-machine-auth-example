@@ -1,0 +1,523 @@
+{
+	"info": {
+		"_postman_id": "e287cfbc-d508-4c66-a74d-384a95f0d06f",
+		"name": "01 - Performance Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30596148"
+	},
+	"item": [
+		{
+			"name": "01 - Function",
+			"item": [
+				{
+					"name": "01 - Get all Books",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/books",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02 - Get not existing Book",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/books/123456789",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books",
+								"123456789"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03 - Create a Book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.environment.set('book_id', jsonResponse.book_id)",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"book_title\": \"Example Book Title\",\n    \"book_desc\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mattis nunc sed blandit libero volutpat sed cras ornare. Donec ultrices tincidunt arcu non sodales neque sodales ut etiam. Bibendum at varius vel pharetra vel. Eu volutpat odio facilisis mauris. Risus quis varius quam quisque id diam vel quam.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/books",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04 - Get new created Book",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/books/{{book_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books",
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05 - Update Book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"book_title\": \"Example Book Title - Changed\",\n    \"book_desc\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mattis nunc sed blandit libero volutpat sed cras ornare. Donec ultrices tincidunt arcu non sodales neque sodales ut etiam. Bibendum at varius vel pharetra vel. Eu volutpat odio facilisis mauris. Risus quis varius quam quisque id diam vel quam. Mattis nunc sed blandit libero volutpat sed cras ornare. Donec ultrices tincidunt arcu non sodales neque sodales ut etiam. Bibendum at varius vel pharetra vel. Eu volutpat odio facilisis mauris. Risus quis varius quam quisque id diam vel quam.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/books/{{book_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books",
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06 - Get changed Book",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/books/{{book_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books",
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07 - Delete created Book",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/books/{{book_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books",
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "08 - Create a Book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.environment.set('book_id', jsonResponse.book_id)",
+									"",
+									"let counter = pm.environment.get('counter')",
+									"let book_ids = pm.environment.get('book_ids')",
+									"",
+									"if(book_ids == null) {",
+									"    book_ids = [];",
+									"} else {",
+									"   book_ids = JSON.parse(book_ids);",
+									"}",
+									"",
+									"book_ids.push(jsonResponse.book_id)",
+									"",
+									"pm.environment.set(\"book_ids\", JSON.stringify(book_ids));",
+									"",
+									"pm.environment.set('counter', counter+1)",
+									"",
+									"",
+									"if (counter >= 199) {",
+									"    console.log(\"Delete Books after 199 created\")",
+									"    postman.setNextRequest(\"20 - Delete all created Books\");",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"book_title\": \"Example Book Title\",\n    \"book_desc\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mattis nunc sed blandit libero volutpat sed cras ornare. Donec ultrices tincidunt arcu non sodales neque sodales ut etiam. Bibendum at varius vel pharetra vel. Eu volutpat odio facilisis mauris. Risus quis varius quam quisque id diam vel quam.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/books",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "09 - Get new created Book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"postman.setNextRequest(\"01 - Get all Books\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/books/{{book_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books",
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "20 - Delete all created Books",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let book_ids = pm.environment.get('book_ids')",
+									"",
+									"if(book_ids == null) {",
+									"    book_ids = [];",
+									"} else {",
+									"   book_ids = JSON.parse(book_ids);",
+									"}",
+									"",
+									"pm.test(\"pre-req array is not empty\", () => {",
+									"    pm.expect(book_ids).to.be.an(\"array\").that.is.not.empty; ",
+									"});",
+									"",
+									"var current_book_id = book_ids.shift();",
+									"",
+									"pm.environment.set(\"book_id_to_delete\", current_book_id);",
+									"pm.environment.set(\"book_ids\", JSON.stringify(book_ids));",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var array = JSON.parse(pm.environment.get(\"book_ids\"));",
+									"",
+									"var expected_book_id = pm.environment.get(\"book_id_to_delete\");",
+									"",
+									"if (array.length > 0){",
+									"    postman.setNextRequest(\"20 - Delete all created Books\");",
+									"",
+									"} else {",
+									"    postman.setNextRequest(\"01 - Get all Books\");",
+									"    pm.environment.set('counter', 0)",
+									"",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/books/{{book_id_to_delete}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books",
+								"{{book_id_to_delete}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.environment.set(\"backend\", \"fn\")"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "99 -  Clean Up",
+			"item": [
+				{
+					"name": "01 - Get all Book IDs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonResponse = pm.response.json();",
+									"",
+									"",
+									"let book_ids = pm.environment.get('book_ids_to_delete')",
+									"",
+									"if(book_ids == null) {",
+									"    book_ids = [];",
+									"} else {",
+									"   book_ids = JSON.parse(book_ids);",
+									"}",
+									"",
+									"",
+									"jsonResponse.books.forEach(function (book) {",
+									"    book_ids.push(book.book_id)",
+									"});",
+									"",
+									"",
+									"pm.environment.set(\"book_ids_to_delete\", JSON.stringify(book_ids));",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/books",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02 - Delete all created Books",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let book_ids = pm.environment.get('book_ids_to_delete')",
+									"",
+									"if(book_ids == null) {",
+									"    book_ids = [];",
+									"} else {",
+									"   book_ids = JSON.parse(book_ids);",
+									"}",
+									"",
+									"pm.test(\"pre-req array is not empty\", () => {",
+									"    pm.expect(book_ids).to.be.an(\"array\").that.is.not.empty; ",
+									"});",
+									"",
+									"var current_book_id = book_ids.shift();",
+									"",
+									"pm.environment.set(\"book_id_to_delete\", current_book_id);",
+									"pm.environment.set(\"book_ids_to_delete\", JSON.stringify(book_ids));",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var array = JSON.parse(pm.environment.get(\"book_ids_to_delete\"));",
+									"",
+									"var expected_book_id = pm.environment.get(\"book_id_to_delete\");",
+									"",
+									"if (array.length > 0){",
+									"    postman.setNextRequest(\"02 - Delete all created Books\");",
+									"",
+									"} else {",
+									"    postman.setNextRequest(null);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/books/{{book_id_to_delete}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{backend}}",
+								"books",
+								"{{book_id_to_delete}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
